@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="EN">
+
+<head>
+	<title>ESP32CAM server</title>
+	<meta name="author" content="Blaise Lapierre">
+	<meta name='viewport' content='width-device-width, initial-scale=1'charset='UTF-8' />
+	<meta http-equiv="refresh" content="6">
+	
+	<link rel="stylesheet" type="text/css" href="w3.css">
+	<script type="text/javascript" src="script.js"></script>
+	
+	<script type="text/javascript"> 
+	function display_c(){
+	var refresh=1000; // Refresh rate in milli seconds
+	mytime=setTimeout('display_ct()',refresh)
+	}
+	
+	function display_ct() {
+	var x = new Date()
+	
+	var month = x.getMonth() + 1;
+	var day=x.getDate();
+	if(month <10 ){month='0' + month;}
+	if(day <10 ){day='0' + day;}
+	
+	var hour=x.getHours();
+	var minute=x.getMinutes();
+	var second=x.getSeconds();
+	if(hour <10 ){hour='0'+hour;}
+	if(minute <10 ) {minute='0' + minute; }
+	if(second<10){second='0' + second;}
+	
+	var x1= day + "/" + month + "/" + x.getFullYear(); 
+	x1 = x1 + " - " +  hour + ":" +  minute + ":" +  second;
+	document.getElementById('ct').innerHTML = x1;
+	display_c();
+ 	}
+	</script>
+	<style>
+		p{margin:0;}
+	</style>	
+	
+</head>
+
+<body onload=display_ct();>
+	
+	<p{ font-size: "40px"; STYLE="padding:0 0 0 10px;"}><strong>ESP32CAM server via Esp-Now</strong></p>
+	<p{font-size: "40px"; STYLE="padding:0 0 0 10px;"}><span id="img"><img src="http://192.168.1.14/img" /></span></p>
+	<p{font-size: "40px"; STYLE="padding:0 0 0 10px;"}><span id='ct' ></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Signal:&nbsp;<span id="RSSIval">0</span>%</p>
+</body>
+
+</html>
