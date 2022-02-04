@@ -24,8 +24,8 @@
 #define CHANNEL 1
 
 //USER SETTINGS! Adjust as you need.----------------------------------------------
-const char* ssid = "Livebox-C3C9";// your box/router/AP network name
-const char* password = "86A03EE369783A4591AC572F61";//it's password
+const char* ssid = "Your SSID here!";// your box/router/AP network name
+const char* password = "Your password here!";//it's password
 
 //Sketch variable's---------------------------------------------------------------
 int REDLED = 33;// gpio pin of red led (esp32cam/Ai thinker/HW818
