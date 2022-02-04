@@ -24,7 +24,7 @@
 
 
 // Insert your SSID
-constexpr char WIFI_SSID[] = "Livebox-C3C9";
+constexpr char WIFI_SSID[] = "Your SSID here!";
 
 
 #include "Arduino.h"
