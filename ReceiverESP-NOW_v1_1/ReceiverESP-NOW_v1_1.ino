@@ -2,11 +2,8 @@
 // CAPTURE AND SEND IMAGE OVER ESP NOW
 // WIFIAP and RSSI modifications by Blaise Lapierre!
 // 
-// Original Code by: Tal Ofer
-// https://github.com/talofer99/ESP32CAM-Capture-and-send-image-over-esp-now
-// This is the screen portion of the code for more information
-// https://www.youtube.com/watch?v=0s4Bm9Ar42U
-// 
+// - The receiver receive the picture from camera using esp-now, shamelessly stolen and
+// adapted from here https://github.com/talofer99/ESP32CAM-Capture-and-send-image-over-esp-now
 // - The receiver connect to an access point so data will be accesible on it via
 // webnavigator (it need that sender also get the same wifi channel). Shamelessly
 // stolen and adapted from here https://randomnerdtutorials.com/esp32-esp-now-wi-fi-web-server/.
@@ -24,8 +21,8 @@
 #define CHANNEL 1
 
 //USER SETTINGS! Adjust as you need.----------------------------------------------
-const char* ssid = "Your SSID here!";// your box/router/AP network name
-const char* password = "Your password here!";//it's password
+const char* ssid = "Wp5pro";// your box/router/AP network name
+const char* password = "1234567890";//it's password
 
 //Sketch variable's---------------------------------------------------------------
 int REDLED = 33;// gpio pin of red led (esp32cam/Ai thinker/HW818
@@ -37,6 +34,8 @@ int currentTransmitTotalPackages = 0;
 byte showImage = 0;
 String pictureswitchSTR = "/picture.jpg";// path of working picture
 String pictureRevSTR = "/picturetwo.jpg";// path of saved picture
+unsigned long lastRSSIpercentCalculated;//store last time rssipercent value was calculated
+int RSSIpercentDelay = 20000;//to reset rssipercent value to zero is timed out (disconnected)
 
 // Structure example to receive data
 // Must match the sender structure
@@ -72,7 +71,15 @@ typedef struct {
 } wifi_ieee80211_packet_t;
 
 
+//Static IP settings----------------------------------------------------------------
+// Set your Static IP address
+IPAddress local_IP(192, 168, 43, 160);
+// Set your Gateway IP address
+IPAddress gateway(192, 168, 1, 1);
 
+IPAddress subnet(255, 255, 0, 0);
+IPAddress primaryDNS(8, 8, 8, 8);   //optional
+IPAddress secondaryDNS(8, 8, 4, 4); //optional
 
 
 // Setup function-------------------------------------------------------------------
@@ -88,6 +95,11 @@ void setup() {
 
   //Set device in AP mode to begin with
   WiFi.mode(WIFI_AP_STA);
+
+  // Configures static IP address
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    Serial.println("STA Failed to configure");
+  }
 
   // Set device as a Wi-Fi Station
   WiFi.begin(ssid, password);
@@ -146,6 +158,10 @@ Serial.println(WiFi.channel());
 // Loop function--------------------------------------------------------------------
 void loop(){
   yield();//empty function, do yield (perform background task).
+  if(millis() >= lastRSSIpercentCalculated+RSSIpercentDelay){
+    RSSIpercent = 0;//if delay is exceeded (disconnected) set RSSIpercent to zero
+    allowRSSI = 1;//allow to calculate RSSI again
+    }
 }
 
 
@@ -216,6 +232,7 @@ void promiscuous_rx_cb(void *buf, wifi_promiscuous_pkt_type_t type) {
     if (hdr->addr2[1] != SenderMacID[1]){return;}
     rssi_display = ppkt->rx_ctrl.rssi;
     RSSIpercent = (-90-rssi_display)/-0.6;//RSSI -30 = 100%, -90 = 0%
+    lastRSSIpercentCalculated = millis();
    }
  if(RSSIpercent > 100){RSSIpercent = 100;}// if >100 = 100
  if(RSSIpercent < 0){RSSIpercent = 0;}// if < 0 = 0
