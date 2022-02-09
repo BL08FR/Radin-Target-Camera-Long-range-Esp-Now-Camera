@@ -21,8 +21,8 @@
 #define CHANNEL 1
 
 //USER SETTINGS! Adjust as you need.----------------------------------------------
-const char* ssid = "Wp5pro";// your box/router/AP network name
-const char* password = "1234567890";//it's password
+const char* ssid = "YourSSIDhere";// your box/router/AP network name
+const char* password = "YourPasswordHere";//it's password
 
 //Sketch variable's---------------------------------------------------------------
 int REDLED = 33;// gpio pin of red led (esp32cam/Ai thinker/HW818
