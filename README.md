@@ -13,3 +13,4 @@ This is the screen portion of the code for more information
 https://www.youtube.com/watch?v=0s4Bm9Ar42U
 
 /!\Note: it don't use the LR (low rate/ long range) mode of Esp-Now, first because low rate and second because not compatible with classic wifi on the receiver.
+[23/02/2022] Receiver update to use directionnal antenna and stay within the law, user settings more accessible.
