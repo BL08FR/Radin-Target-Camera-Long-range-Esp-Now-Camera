@@ -2,13 +2,20 @@
 // CAPTURE AND SEND IMAGE OVER ESP NOW
 // WIFIAP and RSSI modifications by Blaise Lapierre!
 // 
-// - The receiver receive the picture from camera using esp-now, shamelessly stolen and
-// adapted from here https://github.com/talofer99/ESP32CAM-Capture-and-send-image-over-esp-now
+// Original Code by: Tal Ofer
+// https://github.com/talofer99/ESP32CAM-Capture-and-send-image-over-esp-now
+// This is the screen portion of the code for more information
+// https://www.youtube.com/watch?v=0s4Bm9Ar42U
+// 
 // - The receiver connect to an access point so data will be accesible on it via
 // webnavigator (it need that sender also get the same wifi channel). Shamelessly
 // stolen and adapted from here https://randomnerdtutorials.com/esp32-esp-now-wi-fi-web-server/.
 // - RSSI from ESP NOW sender is available once after each file transmission completed,
 // shamelessly stolen and adapted from here https://github.com/TenoTrash/ESP32_ESPNOW_RSSI/issues/1. ip fixe
+//
+// The receiver and the access point must be switched on before the camera and in range of it(<=50m)!
+// Once the camera is started with correct parameters according to them, AP & receiver can
+// be switched on/off as you need without effect on the camera.
 */
 
 
@@ -21,8 +28,11 @@
 #define CHANNEL 1
 
 //USER SETTINGS! Adjust as you need.----------------------------------------------
-const char* ssid = "YourSSIDhere";// your box/router/AP network name
-const char* password = "YourPasswordHere";//it's password
+const char* ssid = "Wp5pro";// your box/router/AP network name
+const char* password = "1234567890";//it's password
+IPAddress local_IP(192, 168, 43, 160);// Set a Static IP address on which the webpage will be accessible.
+uint8_t SenderMacID[6] = {0x10, 0x52, 0x1C, 0x63, 0x3F, 0xB4};//Modify this according to the sender board MAC adress (example here for MAC address 10:52:1C:63:3F:B4)
+int ANTgain = 6;// gain of your antenna, in France according to the law you can stay at 100 mW EIRP (20 dBm) if <= 6dBi. The antenna manufacturer may lie about the gain! This is needed because the receiver only receive on ESP-NOW but emit in classic WiFi!
 
 //Sketch variable's---------------------------------------------------------------
 int REDLED = 33;// gpio pin of red led (esp32cam/Ai thinker/HW818
@@ -63,8 +73,6 @@ typedef struct {
   uint8_t addr4[6]; /* optional */
 } wifi_ieee80211_mac_hdr_t;
 
-uint8_t SenderMacID[6] = {0x10, 0x52, 0x1C, 0x63, 0x3F, 0xB4};//sender adress 10:52:1C:63:3F:B4
-
 typedef struct {
   wifi_ieee80211_mac_hdr_t hdr;
   uint8_t payload[0]; /* network data ended with 4 bytes csum (CRC32) */
@@ -72,9 +80,7 @@ typedef struct {
 
 
 //Static IP settings----------------------------------------------------------------
-// Set your Static IP address
-IPAddress local_IP(192, 168, 43, 160);
-// Set your Gateway IP address
+// Set your Gateway IP address, device IP was set in USER SETTINGS at the begining of this file
 IPAddress gateway(192, 168, 1, 1);
 
 IPAddress subnet(255, 255, 0, 0);
@@ -92,7 +98,24 @@ void setup() {
   if (!SPIFFS.begin()){Serial.println(F("ERROR: File System Mount Failed!"));}
   else{Serial.println(F("success init spifss"));}
 
-
+  //Set TX power according to antenna gain
+  float maxPWR = 20 - (ANTgain - 6);//cable loss allow 6dBi
+  Serial.print("Max power to stay legal is ");Serial.print(maxPWR);Serial.println("dBm");
+  Serial.print("Power set to ");
+  if(maxPWR <= 1){WiFi.setTxPower(WIFI_POWER_MINUS_1dBm);Serial.println("1dBm");}
+  if(maxPWR <= 2){WiFi.setTxPower(WIFI_POWER_2dBm);Serial.println("2dBm");}
+  if(maxPWR <= 5){WiFi.setTxPower(WIFI_POWER_5dBm);Serial.println("5dBm");}
+  if(maxPWR <= 7){WiFi.setTxPower(WIFI_POWER_7dBm);Serial.println("7dBm");}
+  if(maxPWR <= 8.5){WiFi.setTxPower(WIFI_POWER_8_5dBm);Serial.println("8.5dBm");}
+  if(maxPWR <= 11){WiFi.setTxPower(WIFI_POWER_11dBm);Serial.println("11dBm");}
+  if(maxPWR <= 13){WiFi.setTxPower(WIFI_POWER_13dBm);Serial.println("13dBm");}
+  if(maxPWR <= 15){WiFi.setTxPower(WIFI_POWER_15dBm);Serial.println("15dBm");}
+  if(maxPWR <= 17){WiFi.setTxPower(WIFI_POWER_17dBm);Serial.println("17dBm");}
+  if(maxPWR <= 18.5){WiFi.setTxPower(WIFI_POWER_18_5dBm);Serial.println("18.5dBm");}
+  if(maxPWR <= 19){WiFi.setTxPower(WIFI_POWER_19dBm);Serial.println("19dBm");}
+  if(maxPWR > 19){WiFi.setTxPower(WIFI_POWER_19_5dBm);Serial.println("19.5dBm");}
+  
+  
   //Set device in AP mode to begin with
   WiFi.mode(WIFI_AP_STA);
 
