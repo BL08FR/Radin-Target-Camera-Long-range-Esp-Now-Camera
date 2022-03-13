@@ -1,4 +1,4 @@
-# Long-range-Esp-Now-Camera
+# Radin target camera (Long-range-Esp-Now-Camera)
 
 Camera sending photo over ESP-NOW (long range) and display it on webserver (classic wifi).
 The camera must be able to see the router AP at startup not to connect on it but to find the correct wifi channel.
