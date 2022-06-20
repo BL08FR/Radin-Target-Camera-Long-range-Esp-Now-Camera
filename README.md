@@ -4,7 +4,7 @@ Camera sending photo over ESP-NOW (long range) and display it on webserver (clas
 The camera must be able to see the router AP at startup not to connect on it but to find the correct wifi channel.
 The receiver connect to the router AP and spread webserver on it to show photos, it receive the photo sent by the camera and update the web page.
 
-Made with ESP32CAM modules (ai thinker / HW818). The camera ESP32 need that you insert SD card.
+Made with ESP32CAM modules (ai thinker / HW818).
 
 Inspired from Randomnerdtutorial for the webserver: https://randomnerdtutorials.com/esp32-esp-now-wi-fi-web-server/
 Inspired from TenoTrash for the RSSI calculation: https://github.com/TenoTrash/ESP32_ESPNOW_RSSI
@@ -14,5 +14,7 @@ https://www.youtube.com/watch?v=0s4Bm9Ar42U
 
 /!\Note: it don't use the LR (low rate/ long range) mode of Esp-Now, first because low rate and second because not compatible with classic wifi on the receiver.
 [23/02/2022] Receiver update to use directionnal antenna and stay within the law, user settings more accessible.
+
+[21/06/2022] CameraESP-NOW_v1_1spiffs : Camera module use now SPIFFS memory to save the picture inducing picture refresh faster (+-5s for 640p) and it's no more necessary to use a micro-SD card.
 
 NB: To handle ESP32 arduino IDE need to have python installed!
