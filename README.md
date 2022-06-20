@@ -18,3 +18,4 @@ https://www.youtube.com/watch?v=0s4Bm9Ar42U
 [21/06/2022] CameraESP-NOW_v1_1spiffs : Camera module use now SPIFFS memory to save the picture inducing picture refresh faster (+-5s for 640p) and it's no more necessary to use a micro-SD card.
 
 NB: To handle ESP32 arduino IDE need to have python installed!
+NB2: Some other's chinese board gave me worst results (approx. -20% of missing signal force that significantly reduce the range), choose quality board's from recognized seller's and be very careful when you modify it for the external antenna.
