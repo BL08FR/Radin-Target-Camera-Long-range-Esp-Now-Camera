@@ -31,7 +31,7 @@
 
 
 // Insert your access point SSID
-constexpr char WIFI_SSID[] = "Wp5pro";
+constexpr char WIFI_SSID[] = "XXXXXXX";// set here the SSID of your router AP (from internet box, smartphone...)
 
 
 #include "Arduino.h"//included as standard
