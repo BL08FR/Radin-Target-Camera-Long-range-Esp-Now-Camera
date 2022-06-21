@@ -166,6 +166,7 @@ void setup() {
     Serial.print("STA MAC: "); Serial.println(WiFi.macAddress());
     // Init ESPNow with a fallback logic
     InitESPNow();
+    WiFi.setTxPower(WIFI_POWER_19_5dBm);// WIFI_POWER_19_5dBm = maximum
     // Once ESPNow is successfully Init, we will register for Send CB to
     // get the status of Trasnmitted packet
     esp_now_register_send_cb(OnDataSent);
