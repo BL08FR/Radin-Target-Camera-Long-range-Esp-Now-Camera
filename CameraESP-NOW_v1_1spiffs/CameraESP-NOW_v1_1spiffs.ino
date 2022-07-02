@@ -20,7 +20,7 @@
 // - UseFlashLED variale allow you for light signal to use the red or the
 // white (flash)LED from the ESP32cam/AI Thinker cam/HW818 module.
 //
-// The receiver and the access point must be switched on before the camera and in range of it(<=50m)!
+// The receiver and the access point must be switched on before the camera and in range of it(<=50m for classic wifi)!
 // Once the camera is started with correct parameters according to them, AP & receiver can
 // be switched on/off as you need without effect on the camera.
 
