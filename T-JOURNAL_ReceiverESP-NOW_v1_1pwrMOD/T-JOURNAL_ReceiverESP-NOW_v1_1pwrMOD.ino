@@ -37,12 +37,11 @@
 #define CHANNEL 1
 
 //USER SETTINGS! Adjust as you need.----------------------------------------------
-const char* ssid = "Wp5pro";// your box/router/AP network nameB4
-const char* password = "1234567890";//it's password
-IPAddress local_IP(192, 168, 43, 160);// Set a Static IP address on which the webpage will be accessible.
-uint8_t SenderMacID[6] = {0x4C, 0xEB, 0xD6, 0x43, 0x3C, 0x54}; /*{0x30, 0xC6, 0xF7, 0x05, 0xC8, 0x44}; {0x10, 0x52, 0x1C, 0x63, 0x3F, 0xB4}; 0x78, 0x21, 0x84, 0x80, 0x8C, 0x30 TJURNAL0x4C, 0xEB, 0xD6, 0x43, 0x3C, 0x54 */
-//Modify this according to the sender board MAC adress (example here for MAC address 10:52:1C:63:3F:B4)
-int ANTgain = 6;// gain of your antenna, in France according to the law you can stay at 100 mW EIRP (20 dBm) if <= 6dBi. The antenna manufacturer may lie about the gain! This is needed because the receiver only receive on ESP-NOW but emit in classic WiFi!
+const char* ssid = "THE_WIFI_NAME_YOUR_RECEIVER_WILL_CONNECT_ON";// your box/router/AP network nameB4
+const char* password = "IT'S PASSWORD";//it's password
+IPAddress local_IP(192, 168, 1, 25);// Set a Static IP address on which the receiver webpage will be accessible.
+uint8_t SenderMacID[6] = {0x10, 0x52, 0x1C, 0x63, 0x3F, 0xB4};// Modify this according to the sender board MAC adress (example here for MAC address 10:52:1C:63:3F:B4)
+int ANTgain = 3;// gain of your antenna, in France according to the law you can stay at 100 mW EIRP (20 dBm) if <= 6dBi. The antenna manufacturer may lie about the gain! This is needed because the receiver only receive on ESP-NOW but emit in classic WiFi!
 
 //Sketch variable's---------------------------------------------------------------
 int rssi_display;// value to store signal strenght
